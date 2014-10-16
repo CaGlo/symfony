@@ -1,0 +1,31 @@
+{# app/Resources/views/base.html.twig #}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SF2</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('css/bootstrap-theme.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+       
+        <style type="text/css">
+            body{
+                padding-top: 60px;
+            }
+        </style>
+    </head>
+    <body>
+        
+        {% include('BoAdminBundle:Default:menu.html.twig')%}
+        <div class="container">
+            <div class="row">
+                {% block body %}
+                {% endblock %}
+            </div>
+        </div>
+
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="{{ asset('js/bootstrap.min.js') }}" type="text/javascript"></script>
+    </body>
+</html>

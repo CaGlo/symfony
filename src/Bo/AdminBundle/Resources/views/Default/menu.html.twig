@@ -1,0 +1,33 @@
+{# src/Bo/AdminBundle/Resources/views/Default/menu.html.twig #}
+<!-- menu -->
+        <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Exercices</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{ path('Accueil',{ 'name':'nico'}) }}">Accueil</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Produit <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('admin.produits') }}">Liste produit</a></li>
+                                <li><a href="{{ path('admin.produit_fixtures2') }}">Ajout catégorie</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{ path('admin.aide') }}">Aide</a></li>
+                    </ul>
+<!--                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Identification <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Connection</a></li>
+                            </ul>
+                        </li>
+                    </ul>-->
+                </div>
+            </div>
+        </nav>
+        <!-- menu end -->

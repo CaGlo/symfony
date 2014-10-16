@@ -1,0 +1,21 @@
+parameters: 
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: symfony
+    database_user: root
+    database_password: null
+    mailer_transport: smtp
+    mailer_host: smtp.numericable.fr
+    mailer_user:
+    mailer_password: 
+        
+    locale: en
+    
+    secret: 297a25128bfe9bfdc11448eee8a5a77ee62ae9ea
+    
+    debug_toolbar: true
+    debug_redirects: false
+    
+    use_assetic_controller: true
+    database_path: null

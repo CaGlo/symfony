@@ -1,0 +1,54 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+    <div class="flash-notice">
+        {{ flashMessage }}
+    </div>
+{% endfor %}
+
+<a href="{{ path('admin.produit_fixtures') }}" class="btn btn-primary" role="button">Ajout</a>
+<a href="{{ path('admin.produit_form') }}" class="btn btn-primary" role="button">Nouveau produit</a>
+
+<table class="table table-striped">
+    <tr>
+        <td>N°</td>
+        <td>Catégorie</td>
+        <td>Nom</td>
+        <td>Prix</td>
+        <td>Description</td>
+        <td>Disponibilité</td>
+        <td>Image</td>
+        <td>Crée le</td>
+        <td>Mise à jour le</td>
+        <td></td>
+        <td></td> 
+    </tr>
+     {% for p in produits %}
+     <tr>
+        <td>{{p.id}}</td>
+        {%if p.produitCategorie %}
+           <td>{{p.produitCategorie.__toString()}}</td>
+        {%else%}
+            <td> --- </td>
+        {%endif%}
+        <td>{{p.nom}}</td>
+        <td>{{p.prix}}</td>
+        <td>{{p.description}}</td>
+        {%if p.isDisponible %}
+            <td> Oui </td>
+        {%else%}
+            <td> Non </td>
+        {%endif%}
+        {%if p.fileImg %}
+            <td><img src="{{asset("uploads/"~p.fileImg)}}" ></td>
+        {%else%}
+            <td> </td>
+        {%endif%}
+        <td>{{p.created|date('d/m/y')}}</td>
+        <td>{{p.updated|date('d/m/y')}}</td>
+        <td><a href="{{ path('admin.produit_form', {'id': p.id}) }}" class="btn btn-info btn-xs" role="button">Modifier</a></td>
+        <td><a href="{{ path('admin.produit_delete', {'id': p.id}) }}" class="btn btn-danger btn-xs" role="button">Supprimer</a></td>
+    </tr>
+     {% endfor %}
+</table>
+{% endblock %}
