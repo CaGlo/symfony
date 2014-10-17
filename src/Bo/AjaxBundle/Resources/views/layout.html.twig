@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Excercice Ajax</title>
+
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+        <style>
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+        </style>
+        <link rel="stylesheet" href="{{ asset('css/bootstrap-responsive.min.css') }}">
+
+    </head>
+    <body>
+
+
+        <div class="container">
+
+            {% block body %}
+            {% endblock %}
+
+            <hr>
+
+            <footer>
+                <p>Excercice ajax</p>
+            </footer>
+
+        </div>
+
+
+        <script src="http://code.jquery.com/jquery.js"></script>
+
+        <script src="{{ asset('js/ajax.js') }}"></script>
+
+        {% block js %}
+        {% endblock %}
+
+    </body>
+</html>

@@ -1,0 +1,41 @@
+{% extends 'BoAjaxBundle::layout.html.twig' %}
+{% block body %}
+    <div class="hero-unit">
+
+        <h5>Liste des produits dans mon panier</h5>
+
+        <br>
+
+        <div id="liste_users">
+
+            {% for key, produit in app.session.get('produits') %}
+            <div class="alert alert-info">
+                {{produit['nom']}} - {{produit['prix']}}
+                <button id="{{key}}" type="button" class="close">&times;</button>
+            </div>
+            {% else %}
+            Pas de produits disponibles
+            {% endfor %}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(".close").click(function(){
+            var id = $(this).attr('id');
+            
+            $.ajax({
+                type: "POST",
+                url: "{{ path('ajax.delete_produits') }}",
+                data: {id:$(this).attr('id')},
+                dataType: "html",
+                success: function(){
+                    alert("Le produit a bien été supprimé !");
+                    $('#'+id).parent().slideUp();
+                }
+            });
+            });
+    </script>
+{% endblock %}

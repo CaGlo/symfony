@@ -2,20 +2,22 @@
 
 namespace Bo\AdminBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Validator\Constraint\Length;
-use Symfony\Component\Validator\Constraint\NotBlank;
-use Symfony\Component\Validator\Constraint\Iban;
-use Symfony\Component\Validator\Constraint\Image;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Iban;
+use Symfony\Component\Validator\Constraints\Image; 
+use Bo\AdminBundle\Mailer\Contact;
 /**
  * Contact controller.
  *
  * 
  */
-class ContactController {
+class ContactController extends Controller {
     
     
       /* ******* FORM_CONTACT ACTION ******* */
@@ -29,31 +31,67 @@ class ContactController {
     {
          $defaultData = array('message' => 'Type your message here');
         $form = $this->createFormBuilder($defaultData)
-                ->add('Civilité', 'choice', array(
+                ->add('Civilite', 'choice', array(
                         'choices' => array('m' => 'Homme', 'f' => 'Femme'),
-                        'expanded' => true,
-                        'multiple' => false,
+                        'required' => true,
                         'constraints' => new NotBlank()
                     ))
-                ->add('Nom', 'text', array('constraints' => new Length(array('min' =>12 ))))
-                ->add('Prenom', 'text', array('constraints' => new Length(array('min' =>12 ))))
-                ->add('Email', 'email', array('constraints' => new Length(array('min' =>100 ))))
+                ->add('Nom', 'text', array('constraints' => new Length(array('min' =>3 ))))
+                ->add('Prenom', 'text', array('constraints' => new Length(array('min' =>3 ))))
+                ->add('Email', 'email', array('constraints' => new Length(array('min' =>5 ))))
                 ->add('Iban', 'text', array('constraints' => new Iban()))
-                ->add('Message', 'textarea', array('constraints' => new Image()))
-                ->add('Fichier joint', 'file')
+                ->add('Message', 'textarea')
+                ->add('fichierJoint', 'file', array('constraints' => array(new NotBlank(), new Image())))
+                ->add('Envoyer', 'submit')
                 ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
              // Les données sont un tableau avec les clés 
-            
+
             $data = $form->getData();
             
-            $dataSubject = "Email de".$data['Civilité']." ".$data['Prenom']." ".$data['Nom']
-        }
+            $subject = "Email de".$data['Civilite']." ".$data['Prenom']." ".$data['Nom'];
+            $emailFrom = $data['Email'];
+            $emailTo = "caglar.aslan89@gmail.com";
+            $message = $data['Message'];
+            $dataFile = $data['fichierJoint'];
+            $path = $this->get('kernel')->getRootDir() . '/../web/uploads/';
+            $dataFile->move($path, $dataFile->getClientOriginalName());
+            $fileAttachement = $path . $dataFile->getClientOriginalName();
+            
+            
+            $mailerContact = $this->get("Mailer_CaGlo");
+            $mailerContact->prepareMail($subject, $emailFrom, $emailTo, $message, $fileAttachement);
 
-    // ... affiche le formulaire
+            if($mailerContact->send()){
+                return $this->redirect($this->generateUrl('admin.email_ok'));
+            }
+            else{
+                throw $this->createNotFoundException('email non envoyé');
+            }            
+        }
+        
+        return array('form' => $form->createView());
     }
     
+    
+    
+     /* ******* EMAIL_OK ACTION ******* */
+    
+    
+    /**
+     * @Route("/email_ok", name="admin.email_ok")
+     * @Template()
+     */
+    public function email_okAction()
+    {
+        $this->get('session')->getFlashBag()->add(
+                'notice', 'Votre e-mail a bien été envoyé !'
+        );
+
+       return array();
+       
+    }
 }

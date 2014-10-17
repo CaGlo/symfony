@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+{% form_theme form 'BoAdminBundle:Form:fields.html.twig' %}
+{% block body %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'} } ) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.Civilite) }}
+        {{ form_row(form.Nom) }}
+        {{ form_row(form.Prenom) }}
+        {{ form_row(form.Email) }}
+        {{ form_row(form.Iban) }}
+        {{ form_row(form.Message) }}        
+        {{ form_row(form.fichierJoint) }}
+        
+        
+
+    {{ form_end(form) }}
+{% endblock %}
